@@ -136,8 +136,8 @@ class LoginController extends Controller
                     'name' => 'required',
                     'type' => 'required',
                     'openId' => 'required',
-                    'email' => 'nullable',
-                    'phone' => 'nullable',
+                    'email' => 'max:50',
+                    'phone' => 'max:30'
                 ]
             );
 
