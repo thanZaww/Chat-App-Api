@@ -13,118 +13,7 @@ use Illuminate\Support\Facades\Validator;
 class LoginController extends Controller
 {
 
-    /*
-    Second Method
-
-    try {
-    $validator = Validator::make(
-    $request->all(),
-    [
-    'avatar' => 'required',
-    'name' => 'required',
-    'type' => 'required',
-    'openId' => 'required',
-    'email' => 'max:50',
-    'phone' => 'max:30',
-    ]
-    );
-
-    if ($validator->fails()) {
-    return response()->json([
-    'code' => -1,
-    'data' => 'no valid data',
-    'msg' => $validator->errors()->first(),
-    ]);
-    }
-
-    $validated = $validator->validated();
-
-    Step 2: Check for existing user
-    $map = [];
-    $map['type'] = $validated['type'];
-    $map['openId'] = $validated['openId'];
-
-    Debugging log
-    Log::info('Searching for user with map:', $map);
-
-    Step 3: Attempt to execute the query
-    try {
-    $result = DB::table('users')->select(
-    'avatar',
-    'name',
-    'description',
-    'type',
-    'token',
-    'accessToken',
-    'online'
-    )->where($map)->first();
-
-    Debugging log
-    Log::info('Query result:', (array)$result);
-    } catch (Exception $e) {
-    Log::error('Database query failed:', ['exception' => $e]);
-    return response()->json([
-    'code' => 500,
-    'data' => null,
-    'msg' => 'Database query failed',
-    ], 500);
-    }
-
-    Step 4: Handle the result
-    if (empty($result)) {
-    $validated['token'] = md5(uniqid() . rand(10000, 99999));
-    $validated['created_at'] = Carbon::now();
-    $validated['accessToken'] = md5(uniqid() . rand(1000000, 9999999));
-    $validated['expireDate'] = Carbon::now()->addDays(30);
-
-    return ['userId' => $validated];
-    Debugging log
-    Log::info('Inserting new user with validated data:', $validated);
-
-    $userId = DB::table('users')->insertGetId($validated);
-    Log::info('Inserting new user with validated data error:', $validated);
-
-    Debugging log
-    Log::info('New user ID:', $userId);
-
-    $userResult = DB::table('users')->select(
-    'avatar',
-    'name',
-    'description',
-    'type',
-    'token',
-    'accessToken',
-    'online'
-    )->where('id', '=', $userId)->first();
-
-    Debugging log
-    Log::info('New user result:', (array)$userResult);
-
-    return response()->json([
-    'code' => 0,
-    'data' => $userResult,
-    'msg' => 'User has been created',
-    ]);
-    } else {
-    return response()->json([
-    'code' => 1,
-    'data' => $result,
-    'msg' => 'User already exists',
-    ]);
-    }
-    } catch (Exception $e) {
-    Log the error
-    Log::error('Error in login method:', ['exception' => $e]);
-
-    return response()->json([
-    'code' => 500,
-    'data' => null,
-    'msg' => 'Internal Server Error',
-    ], 500);
-    }
-    Second Method Closed
-    }
-     */
+   
 
     public function login(Request $request)
     {
@@ -132,12 +21,12 @@ class LoginController extends Controller
             $validator = Validator::make(
                 $request->all(),
                 [
-                    'avatar' => 'required',
-                    'name' => 'required',
-                    'type' => 'required',
-                    'openId' => 'required',
-                    'email' => 'max:50',
-                    'phone' => 'max:30'
+                    'avatar' => 'string|required',
+                    'name' => 'string|required',
+                    'type' => 'integer|required',
+                    'openId' => 'string|required',
+                    'email' => 'string|max:50',
+                    'phone' => 'nullable|max:11'
                 ]
             );
 
@@ -202,7 +91,7 @@ class LoginController extends Controller
             return response()->json([
                 'code' => 500,
                 'data' => null,
-                'msg' => 'Internal Server Error',
+                'msg' => 'Internal Server Error' + $e,
             ], 500);
         }
     }

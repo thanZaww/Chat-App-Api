@@ -25,7 +25,7 @@ return new class extends Migration
             $table->timestamp('expireDate')->nullable(); // Change this line
             $table->string('fcmToken')->nullable();
             $table->integer('online')->default(1);
-            $table->integer('openId');
+            $table->string('openId');
             $table->string('token');
             $table->integer('type');
             $table->integer('phone')->nullable();
