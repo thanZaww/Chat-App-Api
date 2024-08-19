@@ -11,9 +11,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
-{
-
-   
+{  
 
     public function login(Request $request)
     {
@@ -95,5 +93,24 @@ class LoginController extends Controller
             ], 500);
         }
     }
+
+
+    /// define route first. otherwise postman will give error in lecture 78
+    public function contact(Request $request)
+{
+    $token = $request->user_token;
+
+    // Eloquent Model အသုံးပြုပြီး users table မှ data ရယူခြင်း
+    $res = User::select('name', 'avatar', 'description', 'online', 'token')
+               ->where('token', '!=', $token)
+               ->get();
+
+               return response()->json([
+                'code' => 0,
+                'data' => $res,
+                'msg' => 'Got all the users info'
+            ], 200); // Status code ကို ဖော်ပြရန်
+            
+}
 
 }
